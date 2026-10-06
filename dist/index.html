@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8"><meta name="naiwa-build" content="2.1.0"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#fff8ef"><meta name="description" content="11 级奶蛙，真实轮廓碰撞。移动瞄准，松手合成。"><title>合成奶蛙</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css?v=2.1.0"><script defer src="vendor/matter.min.js"></script><script type="module" src="app.js?v=2.1.0"></script></head><body>
+<main class="app-shell">
+  <header class="header"><h1>合成奶蛙</h1><div class="toolbar">
+    <form id="quick-ranking-form" class="quick-ranking" aria-label="提交个人最高成绩">
+      <input id="quick-ranking-name" name="name" aria-label="上榜昵称" maxlength="32" required autocomplete="nickname" placeholder="输入昵称">
+      <button type="submit" class="submit-button">提交成绩</button>
+      <span id="quick-ranking-message" class="quick-ranking-message" role="status"></span>
+    </form>
+    <button id="leaderboard-button" class="icon-button" aria-label="排行榜" title="排行榜"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 3h10v6a5 5 0 0 1-10 0V3ZM7 5H3v3a4 4 0 0 0 4 4m10-7h4v3a4 4 0 0 1-4 4M12 14v6m-5 1h10" stroke-linejoin="round"/></svg></button>
+    <button id="pause" class="icon-button" aria-label="暂停游戏" title="暂停游戏"><img src="icons/pause-fill.svg" alt=""></button>
+    <button id="sound" class="icon-button" aria-label="关闭音效" aria-pressed="true" title="音效"><img id="sound-icon" src="icons/volume-up-fill.svg" alt=""></button>
+  </div></header>
+  <section class="hud" aria-label="本局信息"><div class="score-block"><span class="label">本局得分</span><strong id="score">0</strong><div class="record-line"><span>最高</span><b id="best">0</b><span id="new-best" hidden>新纪录</span></div></div><div class="next-block" id="next-block" hidden><span class="label">下一只</span><img id="next-image" alt="奶莱姆蛙"><span id="next-name" class="sr-only">奶莱姆蛙</span><span id="next-level" class="next-level">LV. 01</span></div></section>
+  <section id="combo" class="combo" aria-label="连击状态" aria-live="polite"><strong id="combo-title">0 层连击</strong><span class="combo-track" aria-hidden="true"><i id="combo-meter"></i></span><b id="combo-multiplier">×1.00</b><span id="combo-note" class="sr-only">每 2.2 秒无合成，层数减一，倍率减 0.25</span></section>
+  <section class="play-region" aria-label="合成奶蛙游戏"><div class="stage" id="stage">
+    <canvas id="game" width="376" height="620" tabindex="0" aria-label="奶蛙合成游戏区。方向键瞄准，空格投放，P 键暂停。"></canvas>
+    <div id="frenzy" class="frenzy" aria-hidden="true"><span>双倍狂欢 <b id="frenzy-time">15s</b></span><i><em id="frenzy-meter"></em></i></div>
+    <div id="reward-banner" class="reward-banner" role="status" hidden><strong id="reward-title"></strong><span id="reward-detail"></span></div>
+    <div id="milestone" class="milestone" role="status"></div><div id="danger" class="danger" hidden>即将满场 <strong id="danger-count">3</strong></div>
+    <div id="loading" class="loading"><img src="./assets/naiwa/384-r1/sprites/level-01-slime.png" alt=""><h2>奶蛙正在集合</h2><p id="loading-detail">准备开始</p></div>
+  </div><aside id="pet-companion" class="pet-companion" aria-label="陪玩宠物"></aside></section>
+  <footer class="game-actions"><div class="footer-links"><button id="gallery-button" class="gallery-button"><img src="icons/book.svg" alt="">图鉴</button><button id="feedback-button" class="feedback-button" aria-label="意见反馈"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 3h16v14H9l-5 4V3Z" stroke-linejoin="round"/><path d="M8 7h8M8 11h6"/></svg>反馈</button></div><div id="speed-picker" class="speed-picker"><button id="speed-toggle" class="speed-toggle" aria-label="游戏倍速" aria-expanded="false" aria-controls="speed-menu">1.0× ▴</button><div id="speed-menu" class="speed-menu" role="group" aria-label="选择游戏倍速" hidden><button id="speed-1" aria-pressed="true">1.0×</button><button id="speed-1.5" aria-pressed="false">1.5×</button><button id="speed-2" aria-pressed="false">2.0×</button></div></div><button id="restart" class="settle-button">结算并重新开始</button></footer>
+  <div class="utility"><span class="input-hint">拖动瞄准 · 松手投放<span class="landscape-hint"> · 竖屏体验更佳</span></span><span id="version">v2.1.0</span><button id="help">玩法</button></div>
+  <span id="board-status" class="sr-only">游戏进行中</span><span id="storage-status" class="sr-only"></span>
+</main>
+<dialog id="modal" aria-labelledby="modal-title"><div class="modal-content"><button id="modal-close" class="icon-button modal-close" aria-label="关闭"><img src="icons/x-lg.svg" alt=""></button><p id="modal-eyebrow" class="eyebrow"></p><h2 id="modal-title"></h2><div id="modal-body"></div><div id="modal-actions"></div></div></dialog>
+<div id="classic-debut" class="debut-overlay" hidden><section class="debut-card" role="status" aria-label="奶蛙经典首次登场"><p>LV. 05 · 经典首次登场</p><h2>奶蛙</h2><canvas id="debut-animation" width="320" height="180" aria-label="奶蛙大笑动画"></canvas></section></div>
+<div id="reward-fly" class="reward-fly" aria-hidden="true" hidden></div>
+<div id="announcement" class="sr-only" aria-live="polite"></div><div id="settlement-toast" class="toast" role="status" hidden></div>
+</body></html>

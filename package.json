@@ -1,0 +1,13 @@
+{
+  "name": "merge-naiwa",
+  "version": "2.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "check": "node verify.mjs",
+    "build": "node scripts/build.mjs",
+    "lint": "node scripts/lint.mjs",
+    "test": "node --test tests/logic.test.mjs && node tests/browser.mjs && node tests/pet-browser.mjs"
+  }
+}
